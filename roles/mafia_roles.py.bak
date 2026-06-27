@@ -1,0 +1,199 @@
+from .base_role import Role, register_role
+
+register_role(Role(
+    name="don",
+    title="Океан Қироли",
+    emoji="👑",
+    team="mafia",
+    description="Мафия раҳбари. Овоз беришни бошқариш қобилиятига эга.",
+    night_action=True,
+    action_type="redirect_vote",
+))
+
+register_role(Role(
+    name="mafia",
+    title="Акула",
+    emoji="🦈",
+    team="mafia",
+    description="Оддий мафия. Ҳар кеча бир фуқарони ўлдиради.",
+    night_action=True,
+    action_type="kill",
+))
+
+register_role(Role(
+    name="yakuza",
+    title="Қароқчилар Сардори",
+    emoji="🏴‍☠️",
+    team="mafia",
+    description="Бир фуқарони ўз томонига оғдира олади.",
+    night_action=True,
+    action_type="convert",
+    max_uses=1,
+))
+
+register_role(Role(
+    name="fugu",
+    title="Заҳарли Фугу",
+    emoji="🐡",
+    team="mafia",
+    description="Мафия ёрдамчиси. Бир ўйинчини кечаси блоклайди.",
+    night_action=True,
+    action_type="block",
+))
+
+register_role(Role(
+    name="squid",
+    title="Гигант Кальмар",
+    emoji="🦑",
+    team="mafia",
+    description="Қора қароқчи. Рол ҳақидаги маълумотни ўғирлайди.",
+    night_action=True,
+    action_type="steal_info",
+))
+
+register_role(Role(
+    name="crab_thief",
+    title="Қисқичбақа-ўғри",
+    emoji="🦀",
+    team="mafia",
+    description="Ўғри. Бошқа рольнинг қобилиятини ўғирлайди.",
+    night_action=True,
+    action_type="steal_ability",
+))
+
+register_role(Role(
+    name="jellyfish",
+    title="Чақувчи Медуза",
+    emoji="🪼",
+    team="mafia",
+    description="Шантажчи. Бир ўйинчини кундуз сукут қилишга мажбурлайди.",
+    night_action=True,
+    action_type="silence",
+))
+
+register_role(Role(
+    name="crocodile",
+    title="Шўр сув Тимсоҳи",
+    emoji="🐊",
+    team="mafia",
+    description="Адвокат. Мафия аъзосини овоз беришдан ҳимоя қилади.",
+    night_action=True,
+    action_type="protect_vote",
+))
+
+register_role(Role(
+    name="swordfish",
+    title="Қиличбалиқ",
+    emoji="🗡",
+    team="mafia",
+    description="Қотил. Кундуз ўлдириш қобилиятига эга.",
+    night_action=False,
+    action_type="day_kill",
+))
+
+register_role(Role(
+    name="chameleon",
+    title="Хамелеон Балиқ",
+    emoji="🐠",
+    team="mafia",
+    description="Жосус. Текширувчига фуқаро бўлиб кўринади.",
+    passive=True,
+))
+
+register_role(Role(
+    name="killer_whale",
+    title="Қотил Кит",
+    emoji="🐋",
+    team="mafia",
+    description="Рекетир. Ўйинчини мажбуран бировга овоз беришга мажбурлайди.",
+    night_action=True,
+    action_type="force_vote",
+))
+
+register_role(Role(
+    name="abyss",
+    title="Денгиз Тубсизи",
+    emoji="🕳",
+    team="mafia",
+    description="Кўланка. Кечки текширувларга кўринмайди.",
+    passive=True,
+))
+
+register_role(Role(
+    name="mine_fish",
+    title="Мина-балиқ",
+    emoji="💣",
+    team="mafia",
+    description="Бомбачи. Чиқарилса, ёнидагини портлатади.",
+    passive=True,
+))
+
+register_role(Role(
+    name="stingray",
+    title="Зилзилавий Скат",
+    emoji="🧪",
+    team="mafia",
+    description="Заҳарловчи. Ўйинчини заҳарлайди, кейинги кеча ўлади.",
+    night_action=True,
+    action_type="poison",
+))
+
+register_role(Role(
+    name="scorpion",
+    title="Денгиз Чаёни",
+    emoji="🦂",
+    team="mafia",
+    description="Ёлланма қотил. Бир нишонни ўлдириш топшириғини олади.",
+    night_action=True,
+    action_type="contract_kill",
+    max_uses=1,
+))
+
+register_role(Role(
+    name="rat",
+    title="Кема Каламуши",
+    emoji="🐀",
+    team="mafia",
+    description="Сотқин. Фуқаро бўлиб кўринади, лекин мафия учун ишлайди.",
+    passive=True,
+))
+
+register_role(Role(
+    name="necromancer",
+    title="Ўлик Денгизчи",
+    emoji="🦴",
+    team="mafia",
+    description="Некромант. Ўлган ўйинчининг қобилиятини бир марта ишлатади.",
+    night_action=True,
+    action_type="necromancy",
+    max_uses=1,
+))
+
+register_role(Role(
+    name="sea_snake",
+    title="Денгиз Илони",
+    emoji="🐍",
+    team="mafia",
+    description="Ёвуз жодугар. Икки ўйинчининг ролини алмаштиради.",
+    night_action=True,
+    action_type="swap_roles",
+))
+
+register_role(Role(
+    name="piranha",
+    title="Пиранья",
+    emoji="🩸",
+    team="mafia",
+    description="Одамхўр. Ҳар ўлдиришда кучаяди (қўшимча овоз вазни).",
+    passive=True,
+))
+
+register_role(Role(
+    name="corrupt_water",
+    title="Ифлосланган Сув",
+    emoji="🦠",
+    team="mafia",
+    description="Қора табиб. Мафияни даволайди, фуқарони заҳарлайди.",
+    night_action=True,
+    action_type="corrupt_heal",
+))

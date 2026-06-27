@@ -1,0 +1,253 @@
+from .base_role import Role, register_role
+
+register_role(Role(
+    name="detective",
+    title="Нептун Соқчиси",
+    emoji="🔱",
+    team="town",
+    description="Комиссар. Ҳар кеча бир ўйинчининг ролини текширади.",
+    night_action=True,
+    action_type="investigate",
+))
+
+register_role(Role(
+    name="doctor",
+    title="Қутқарувчи Дельфин",
+    emoji="🐬",
+    team="town",
+    description="Доктор. Ҳар кеча бир ўйинчини даволайди (ўлимдан сақлайди).",
+    night_action=True,
+    action_type="heal",
+))
+
+register_role(Role(
+    name="townsfolk",
+    title="Денгизчи",
+    emoji="⚓️",
+    team="town",
+    description="Оддий фуқаро. Максус қобилияти йўқ, фақат овоз беради.",
+    passive=True,
+))
+
+register_role(Role(
+    name="bodyguard",
+    title="Маржон Қўриқчиси",
+    emoji="🛡",
+    team="town",
+    description="Сержант. Ҳимоя қилган ўйинчи ўрнига ўзи ўлади.",
+    night_action=True,
+    action_type="guard",
+))
+
+register_role(Role(
+    name="mayor",
+    title="Донишманд Тошбақа",
+    emoji="🐢",
+    team="town",
+    description="Мэр. Овози икки ҳисобланади.",
+    passive=True,
+))
+
+register_role(Role(
+    name="priest",
+    title="Денгиз Фариштаси",
+    emoji="🕊",
+    team="town",
+    description="Руҳоний. Бир ўйинчининг томонини очиб бера олади.",
+    night_action=True,
+    action_type="reveal",
+    max_uses=1,
+))
+
+register_role(Role(
+    name="hooker",
+    title="Сувпариси",
+    emoji="🧜‍♀️",
+    team="town",
+    description="Фоҳиша. Кечаги ҳаракатни блоклайди.",
+    night_action=True,
+    action_type="block",
+))
+
+register_role(Role(
+    name="journalist",
+    title="Кема Тўтиқуши",
+    emoji="🦜",
+    team="town",
+    description="Журналист. Бир сирни эълон қилиш қобилиятига эга.",
+    night_action=True,
+    action_type="publish",
+    max_uses=1,
+))
+
+register_role(Role(
+    name="watcher",
+    title="Денгиз Бургути",
+    emoji="🦅",
+    team="town",
+    description="Кузатувчи. Ким кимга ташриф буюрганини кўради.",
+    night_action=True,
+    action_type="watch",
+))
+
+register_role(Role(
+    name="jailer",
+    title="Содиқ Қисқичбақа",
+    emoji="🦀",
+    team="town",
+    description="Қоровул. Бир ўйинчини қамаб қўяди ва ҳимоялайди.",
+    night_action=True,
+    action_type="jail",
+))
+
+register_role(Role(
+    name="hunter",
+    title="Ғаввос",
+    emoji="🤿",
+    team="town",
+    description="Овчи. Ўлганда бир ўйинчини отиб ўлдиради.",
+    passive=True,
+))
+
+register_role(Role(
+    name="guard",
+    title="Кўк Кит",
+    emoji="🐳",
+    team="town",
+    description="Гвардиячи. Биринчи мафия ҳужумига чидамли.",
+    passive=True,
+))
+
+register_role(Role(
+    name="judge",
+    title="Океан Қозиси",
+    emoji="⚖️",
+    team="town",
+    description="Судья. Бир овозни бекор қилиш қобилиятига эга.",
+    night_action=False,
+    action_type="cancel_vote",
+    max_uses=1,
+))
+
+register_role(Role(
+    name="prosecutor",
+    title="Болғабош Акула",
+    emoji="🔨",
+    team="town",
+    description="Прокурор. Овозсиз номзодни судга топшира олади.",
+    night_action=False,
+    action_type="force_nominate",
+    max_uses=1,
+))
+
+register_role(Role(
+    name="investigator",
+    title="Маёқчи",
+    emoji="🔍",
+    team="town",
+    description="Текширувчи. Рол категориясини аниқлайди.",
+    night_action=True,
+    action_type="investigate_category",
+))
+
+register_role(Role(
+    name="sponsor",
+    title="Хазинабон",
+    emoji="💰",
+    team="town",
+    description="Ҳомий. Бир ўйинчига иммунитет беради.",
+    night_action=True,
+    action_type="grant_immunity",
+    max_uses=1,
+))
+
+register_role(Role(
+    name="veteran",
+    title="Қароқчилар Овчиси",
+    emoji="⚔️",
+    team="town",
+    description="Жанговар фуқаро. Ҳушёрликка кирса, ташрифчиларни ўлдиради.",
+    night_action=True,
+    action_type="alert",
+    max_uses=3,
+))
+
+register_role(Role(
+    name="trapper",
+    title="Тўр Устаси",
+    emoji="🕸",
+    team="town",
+    description="Изоляторчи. Бир ўйинчига барча ташрифларни блоклайди.",
+    night_action=True,
+    action_type="trap",
+))
+
+register_role(Role(
+    name="lifesaver",
+    title="Ҳаёт Қутқарувчи",
+    emoji="🛟",
+    team="town",
+    description="Қутқарувчи. Овоз беришдан чиқарилган ўйинчини тирилтира олади.",
+    night_action=False,
+    action_type="save",
+    max_uses=1,
+))
+
+register_role(Role(
+    name="lion",
+    title="Денгиз Шери",
+    emoji="🦭",
+    team="town",
+    description="Кучли фуқаро. Рол блоклашга иммунитетли.",
+    passive=True,
+))
+
+register_role(Role(
+    name="twins",
+    title="Эгизак Балиқлар",
+    emoji="🐟🐟",
+    team="town",
+    description="Эгизаклар. Бирга ютқазишади/ютышади, бир-бирини танийди.",
+    passive=True,
+))
+
+register_role(Role(
+    name="blacksmith",
+    title="Лангарсоз",
+    emoji="⚓️",
+    team="town",
+    description="Темирчи. Бир ўйинчига зирҳ беради.",
+    night_action=True,
+    action_type="armor",
+    max_uses=1,
+))
+
+register_role(Role(
+    name="explorer",
+    title="Кашфиётчи",
+    emoji="🗺",
+    team="town",
+    description="Сайёҳ. Ўйинчини кузатиб, унинг нишонини кўради.",
+    night_action=True,
+    action_type="track",
+))
+
+register_role(Role(
+    name="merchant",
+    title="Савдо Кемаси",
+    emoji="🛳",
+    team="town",
+    description="Савдогар. Икки ўйинчининг қобилиятини алмаштиради.",
+    night_action=True,
+    action_type="trade",
+))
+
+register_role(Role(
+    name="alchemist",
+    title="Қадимий Чиғаноқ",
+    emoji="🐚",
+    team="town",
+    description="Алкимёгар. Ҳар кеча иккисидан бир иккирни яратади.",
+    night_action=True,
+    action_type="create_potion",
+))

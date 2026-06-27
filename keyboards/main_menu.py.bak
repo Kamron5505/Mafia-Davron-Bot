@@ -1,0 +1,48 @@
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.utils.keyboard import InlineKeyboardBuilder
+
+
+def main_menu_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.row(
+        InlineKeyboardButton(text="🎮 Чатга ўйин қўшиш", callback_data="add_game"),
+    )
+    builder.row(
+        InlineKeyboardButton(text="🎲 Чатга кириш", callback_data="join_chat"),
+    )
+    builder.row(
+        InlineKeyboardButton(text="🌐 Тил / Language", callback_data="language"),
+    )
+    builder.row(
+        InlineKeyboardButton(text="👤 Профиль | 🎭 Роллар", callback_data="profile_roles"),
+    )
+    return builder.as_markup()
+
+
+def profile_roles_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.row(
+        InlineKeyboardButton(text="👤 Профиль", callback_data="profile"),
+        InlineKeyboardButton(text="🎭 Роллар", callback_data="roles_list"),
+    )
+    builder.row(
+        InlineKeyboardButton(text="🔙 Орқага", callback_data="back_main"),
+    )
+    return builder.as_markup()
+
+
+def back_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.row(
+        InlineKeyboardButton(text="🔙 Орқага", callback_data="back_main"),
+    )
+    return builder.as_markup()
+
+
+def confirm_leave_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.row(
+        InlineKeyboardButton(text="✅ Ҳа, чиқиш", callback_data="confirm_leave"),
+        InlineKeyboardButton(text="❌ Йўқ", callback_data="cancel_leave"),
+    )
+    return builder.as_markup()

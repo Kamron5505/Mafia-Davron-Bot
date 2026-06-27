@@ -1,0 +1,143 @@
+from .base_role import Role, register_role
+
+register_role(Role(
+    name="lovers",
+    title="Марварид Жуфти",
+    emoji="🐚",
+    team="neutral",
+    description="Ошиқлар. Иккаласи бирга ютса ёки ютқазса.",
+    passive=True,
+))
+
+register_role(Role(
+    name="serial_killer",
+    title="Денгиз Бўрони",
+    emoji="🌪",
+    team="neutral",
+    description="Маньяк. Ҳаммани йўқ қилиб, ёлғиз ютса.",
+    night_action=True,
+    action_type="kill",
+))
+
+register_role(Role(
+    name="joker",
+    title="Айёр Октопус",
+    emoji="🐙",
+    team="neutral",
+    description="Жокер. Овоз бериш орқали чиқарилиб ютса.",
+    passive=True,
+))
+
+register_role(Role(
+    name="avenger",
+    title="Сувости Вулқони",
+    emoji="🌋",
+    team="neutral",
+    description="Қасоскор. Уни ўлдирган ўйинчи чиқарилса ютса.",
+    passive=True,
+))
+
+register_role(Role(
+    name="fool",
+    title="Гирдоб",
+    emoji="🌀",
+    team="neutral",
+    description="Телба. Ташрифларни тасодифий бошқа жойга йўналтиради.",
+    passive=True,
+))
+
+register_role(Role(
+    name="ghost",
+    title="Чўккан Кема Руҳи",
+    emoji="👻",
+    team="neutral",
+    description="Арвоҳ. Ўлгандан кейин ҳам овоз бера олади.",
+    passive=True,
+))
+
+register_role(Role(
+    name="cursed",
+    title="Музлаган Денгизчи",
+    emoji="🧟‍♂️",
+    team="neutral",
+    description="Лаънатланган. Мафия томонидан ўлдирилса, мафияга айланади.",
+    passive=True,
+))
+
+register_role(Role(
+    name="executioner",
+    title="Харпунчи",
+    emoji="🪓",
+    team="neutral",
+    description="Жаллод. Белгиланган нишонни чиқариб ютса.",
+    passive=True,
+))
+
+register_role(Role(
+    name="cultist",
+    title="Бермуд Асири",
+    emoji="🧿",
+    team="neutral",
+    description="Сектант. Ўйинчиларни сектага қўшилишга тарғиб қилади.",
+    night_action=True,
+    action_type="recruit",
+))
+
+register_role(Role(
+    name="arsonist",
+    title="Юнон Олови",
+    emoji="🔥",
+    team="neutral",
+    description="Пироман. Ўйинчиларни ёқиб, кейин ҳаммасини бирданига ёндиради.",
+    night_action=True,
+    action_type="douse",
+))
+
+register_role(Role(
+    name="vampire",
+    title="Сувости Кўршапалаги",
+    emoji="🦇",
+    team="neutral",
+    description="Вампир. Ҳар кеча бир ўйинчини ўз томонига оғдиради.",
+    night_action=True,
+    action_type="convert",
+))
+
+register_role(Role(
+    name="infector",
+    title="Заҳарли Сувўти",
+    emoji="🟢",
+    team="neutral",
+    description="Инфекция ташувчи. 2 кечадан кейин ўлдирадиган инфекция юқтиради.",
+    night_action=True,
+    action_type="infect",
+))
+
+register_role(Role(
+    name="kraken",
+    title="Кракен",
+    emoji="🐙",
+    team="neutral",
+    description="Иблис. Кучли ёлғиз ўлдирувчи, максус иммунитетга эга.",
+    night_action=True,
+    action_type="kill",
+))
+
+register_role(Role(
+    name="gambler",
+    title="Денгиз Қиморбози",
+    emoji="🎲",
+    team="neutral",
+    description="Қиморбоз. Натижаларга гаров тикади ва кучайтириш олади.",
+    passive=True,
+))
+
+register_role(Role(
+    name="illusionist",
+    title="Сароб",
+    emoji="🪞",
+    team="neutral",
+    description="Иллюзиячи. Ўйинчиларни бошқа роль қилиб кўрсатади.",
+    night_action=True,
+    action_type="illusion",
+))

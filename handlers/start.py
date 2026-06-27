@@ -1,0 +1,124 @@
+from aiogram import Router, F
+from aiogram.types import Message, CallbackQuery
+from aiogram.filters import Command
+from database.db import Database
+from keyboards.main_menu import main_menu_kb, profile_roles_kb, back_kb
+from utils.messages import MAIN_MENU_TEXT, PROFILE_TEXT, ROLES_LIST_HEADER, ROLE_INFO, LANGUAGE_PROMPT, HELP_TEXT
+from roles.base_role import get_all_roles
+
+router = Router()
+db = Database()
+
+
+@router.message(Command("start"))
+async def cmd_start(message: Message):
+    user = message.from_user
+    await db.create_player(user.id, user.username or "", user.first_name or "")
+    await message.answer(MAIN_MENU_TEXT, reply_markup=main_menu_kb())
+
+
+@router.message(Command("profile"))
+async def cmd_profile(message: Message):
+    await show_profile(message, message.from_user.id)
+
+
+@router.message(Command("language"))
+async def cmd_language(message: Message):
+    await message.answer(LANGUAGE_PROMPT, reply_markup=back_kb())
+
+
+@router.message(Command("help"))
+async def cmd_help(message: Message):
+    await message.answer(HELP_TEXT)
+
+
+@router.callback_query(F.data == "back_main")
+async def back_to_main(callback: CallbackQuery):
+    await callback.message.edit_text(MAIN_MENU_TEXT, reply_markup=main_menu_kb())
+    await callback.answer()
+
+
+@router.callback_query(F.data == "profile_roles")
+async def show_profile_roles_menu(callback: CallbackQuery):
+    await callback.message.edit_text(
+        "Quyidagilardan birini tanlang:",
+        reply_markup=profile_roles_kb(),
+    )
+    await callback.answer()
+
+
+@router.callback_query(F.data == "profile")
+async def show_profile_callback(callback: CallbackQuery):
+    await show_profile(callback.message, callback.from_user.id)
+    await callback.answer()
+
+
+async def show_profile(message, user_id: int):
+    player = await db.get_player(user_id)
+    if not player:
+        await message.answer("Siz hali birorta ham o'yin o'ynamagansiz.", reply_markup=back_kb())
+        return
+
+    games = player["games_played"] or 0
+    wins = player["wins"] or 0
+    losses = player["losses"] or 0
+    winrate = round((wins / games * 100)) if games > 0 else 0
+    fav_role = player["favorite_role"] or "—"
+    mafia_games = player["mafia_games"] or 0
+    town_games = player["town_games"] or 0
+    neutral_games = player["neutral_games"] or 0
+    achievements = player["achievements"] or "—"
+    achievements = achievements.replace("|", " | ") if achievements != "—" else "—"
+
+    text = PROFILE_TEXT.format(
+        games=games, wins=wins, winrate=winrate,
+        losses=losses, fav_role=fav_role,
+        mafia_games=mafia_games, town_games=town_games,
+        neutral_games=neutral_games, achievements=achievements,
+    )
+    await message.answer(text, reply_markup=back_kb())
+
+
+@router.callback_query(F.data == "roles_list")
+async def show_roles_list(callback: CallbackQuery):
+    all_roles = get_all_roles()
+    text = ROLES_LIST_HEADER
+    for role in all_roles:
+        text += ROLE_INFO.format(
+            emoji=role.emoji,
+            title=role.title,
+            name=role.name,
+            description=role.description,
+            team=role.team_label(),
+        )
+
+    if len(text) > 4000:
+        text = text[:4000] + "\n\n...va boshqalar"
+
+    await callback.message.edit_text(text, reply_markup=back_kb())
+    await callback.answer()
+
+
+@router.callback_query(F.data == "add_game")
+async def add_game_info(callback: CallbackQuery):
+    await callback.message.answer(
+        "🎮 O'yin qo'shish uchun guruh chatiga botingni qo'shing\n"
+        "va /startgame buyrug'ini yuboring!\n\n"
+        "Agar siz guruh admini bo'lsangiz, adminlar ro'yxatiga botni qo'shing.",
+    )
+    await callback.answer()
+
+
+@router.callback_query(F.data == "join_chat")
+async def join_chat_info(callback: CallbackQuery):
+    await callback.message.answer(
+        "🎲 Bot o'rnatilgan guruhlarda o'yinga qo'shilishingiz mumkin.\n"
+        "Guruhdagi mavjud o'yinga 'Qo'shilish' tugmasi orqali qatnashing.",
+    )
+    await callback.answer()
+
+
+@router.callback_query(F.data == "language")
+async def handle_language(callback: CallbackQuery):
+    await callback.message.edit_text(LANGUAGE_PROMPT, reply_markup=back_kb())
+    await callback.answer()

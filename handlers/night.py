@@ -1,0 +1,169 @@
+from aiogram import Router, F
+from aiogram.types import CallbackQuery
+from database.db import Database
+from utils.messages import NIGHT_ACTION_CONFIRMED, NIGHT_TIMEOUT
+from utils.state import active_games
+
+router = Router()
+db = Database()
+
+
+@router.callback_query(F.data.startswith("mafia_kill:"))
+async def handle_mafia_kill(callback: CallbackQuery):
+    data = callback.data.split(":")
+    game_id = int(data[1])
+    target_id = data[2]
+
+    game = active_games.get(game_id)
+    if not game or game["phase"] not in ("night_action", "night"):
+        await callback.answer("❌ Harakat vaqti o'tdi!", show_alert=True)
+        return
+
+    user_id = callback.from_user.id
+    if user_id not in game["players"] or not game["players"][user_id]["alive"]:
+        await callback.answer(NOT_ALIVE, show_alert=True)
+        return
+
+    if target_id == "skip":
+        game["players"][user_id]["night_action"] = None
+        await callback.answer("⏭ Harakatsiz qoldingiz")
+        return
+
+    target_id = int(target_id)
+    game["players"][user_id]["night_action"] = {
+        "type": "kill",
+        "target": target_id,
+    }
+
+    await db.save_night_action(game_id, game["night"], user_id, "kill", target_id)
+    await callback.answer(NIGHT_ACTION_CONFIRMED, show_alert=True)
+
+    try:
+        await callback.message.edit_text(
+            f"{NIGHT_ACTION_CONFIRMED}\n\nNishon: {game['players'].get(target_id, {}).get('name', f'ID{target_id}')}"
+        )
+    except Exception:
+        pass
+
+
+@router.callback_query(F.data.startswith("heal:"))
+async def handle_heal(callback: CallbackQuery):
+    data = callback.data.split(":")
+    game_id = int(data[1])
+    target_id = data[2]
+
+    game = active_games.get(game_id)
+    if not game or game["phase"] not in ("night_action", "night"):
+        await callback.answer("❌ Harakat vaqti o'tdi!", show_alert=True)
+        return
+
+    user_id = callback.from_user.id
+    if user_id not in game["players"] or not game["players"][user_id]["alive"]:
+        await callback.answer(NOT_ALIVE, show_alert=True)
+        return
+
+    if target_id == "skip":
+        game["players"][user_id]["night_action"] = None
+        await callback.answer("⏭ Harakatsiz qoldingiz")
+        return
+
+    target_id = int(target_id)
+    game["players"][user_id]["night_action"] = {
+        "type": "heal",
+        "target": target_id,
+    }
+
+    await db.save_night_action(game_id, game["night"], user_id, "heal", target_id)
+    await callback.answer(NIGHT_ACTION_CONFIRMED, show_alert=True)
+
+    try:
+        await callback.message.edit_text(NIGHT_ACTION_CONFIRMED)
+    except Exception:
+        pass
+
+
+@router.callback_query(F.data.startswith("investigate:"))
+async def handle_investigate(callback: CallbackQuery):
+    data = callback.data.split(":")
+    game_id = int(data[1])
+    target_id = data[2]
+
+    game = active_games.get(game_id)
+    if not game or game["phase"] not in ("night_action", "night"):
+        await callback.answer("❌ Harakat vaqti o'tdi!", show_alert=True)
+        return
+
+    user_id = callback.from_user.id
+    if user_id not in game["players"] or not game["players"][user_id]["alive"]:
+        await callback.answer(NOT_ALIVE, show_alert=True)
+        return
+
+    if target_id == "skip":
+        game["players"][user_id]["night_action"] = None
+        await callback.answer("⏭ Harakatsiz qoldingiz")
+        return
+
+    target_id = int(target_id)
+    target_role = game["players"][target_id]["role"]
+    result = "🦈 Qora Kuchlar" if target_role.team == "mafia" else "🛡 Oq Kuchlar"
+    if target_role.team == "neutral":
+        result = "🌪 Neytral kuch"
+
+    game["players"][user_id]["night_action"] = {
+        "type": "investigate",
+        "target": target_id,
+    }
+
+    await db.save_night_action(game_id, game["night"], user_id, "investigate", target_id)
+    await callback.answer(NIGHT_ACTION_CONFIRMED, show_alert=True)
+
+    try:
+        target_name = game["players"].get(target_id, {}).get("name", f"ID{target_id}")
+        await callback.message.edit_text(
+            f"{NIGHT_ACTION_CONFIRMED}\n\n"
+            f"🔍 *{target_name}* tekshiruv natijasi: {result}",
+        )
+    except Exception:
+        pass
+
+
+@router.callback_query(F.data.startswith("night:"))
+async def handle_generic_night(callback: CallbackQuery):
+    parts = callback.data.split(":")
+    if len(parts) < 3:
+        await callback.answer("❌ Xato!", show_alert=True)
+        return
+
+    action_type = parts[1]
+    target_id = parts[2]
+
+    game = None
+    for gid, g in active_games.items():
+        for uid in g["players"]:
+            if uid == callback.from_user.id:
+                game = g
+                break
+        if game:
+            break
+
+    if not game or game["phase"] not in ("night_action", "night"):
+        await callback.answer("❌ Harakat vaqti o'tdi!", show_alert=True)
+        return
+
+    user_id = callback.from_user.id
+    if target_id == "skip":
+        game["players"][user_id]["night_action"] = None
+        await callback.answer("⏭ Harakatsiz qoldingiz")
+        return
+
+    target_id = int(target_id)
+    game["players"][user_id]["night_action"] = {
+        "type": action_type,
+        "target": target_id,
+    }
+
+    await callback.answer(NIGHT_ACTION_CONFIRMED, show_alert=True)
+    try:
+        await callback.message.edit_text(NIGHT_ACTION_CONFIRMED)
+    except Exception:
+        pass
