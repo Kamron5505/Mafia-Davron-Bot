@@ -15,6 +15,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import BotCommand, BotCommandScopeDefault
 
 from config import BOT_TOKEN
+import roles
 from database.db import Database
 from handlers import start, game, night, day, payment, broadcast
 from handlers.admin import panel as admin_panel
