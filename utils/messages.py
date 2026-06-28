@@ -143,6 +143,12 @@ NOT_IN_GAME = "❌ Siz o'yinda emassiz!"
 
 GAME_ALREADY_STARTED = "❌ O'yin allaqachon boshlangan!"
 
+TIMER_EXTENDED = (
+    "⏳ O'yinni boshlash uchun yetarli o'yinchi yo'q.\n"
+    "Kutish vaqti avtomatik ravishda 30 soniyaga uzaytirildi.\n"
+    "Qolgan vaqt: {time} soniya."
+)
+
 ERROR_OCCURRED = "❌ Xatolik yuz berdi. Qaytadan urinib ko'ring."
 
 ADMIN_ONLY = "❌ Faqat guruh adminlari bu amalni bajara oladi."

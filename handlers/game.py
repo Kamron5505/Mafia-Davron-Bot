@@ -1,4 +1,5 @@
 import asyncio
+import time
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery, ChatMemberUpdated
 from aiogram.filters import Command, ChatMemberUpdatedFilter
@@ -15,6 +16,13 @@ from utils.state import active_games, game_timers
 
 router = Router()
 db = Database()
+
+
+def _get_remaining_time(game: dict) -> int:
+    """Hisoblab qolgan vaqtni qaytaradi (soniyalarda)."""
+    end_time = game.get("timer_end_time", 0)
+    remaining = int(end_time - time.time())
+    return max(0, remaining)
 
 
 @router.message(Command("startgame"))
@@ -43,6 +51,8 @@ async def start_game_lobby(message: Message):
         "night": 0,
         "chat_id": chat.id,
         "started_by": message.from_user.id,
+        "timer_extended": False,
+        "timer_end_time": time.time() + GAME_JOIN_TIME,
     }
 
     await message.answer(
@@ -58,7 +68,32 @@ async def start_game_lobby(message: Message):
 
 
 async def lobby_timer(game_id: int, chat_id: int):
-    await asyncio.sleep(GAME_JOIN_TIME)
+    game = active_games.get(game_id)
+    if not game:
+        return
+
+    # Цикл проверки: каждую секунду смотрим, не набралось ли игроков
+    # или не истекло ли время ожидания
+    while True:
+        remaining = game["timer_end_time"] - time.time()
+
+        if remaining <= 0:
+            break
+
+        # Проверяем, не изменилось ли состояние игры
+        game = active_games.get(game_id)
+        if not game or game["phase"] != "lobby":
+            return
+
+        # Если набралось достаточно игроков — запускаем игру
+        if len(game["players"]) >= MIN_PLAYERS:
+            await start_game(game_id, chat_id)
+            return
+
+        # Спим 1 секунду и проверяем снова
+        await asyncio.sleep(1)
+
+    # Таймер истёк — проверяем, хватает ли игроков
     game = active_games.get(game_id)
     if not game or game["phase"] != "lobby":
         return
@@ -74,6 +109,7 @@ async def lobby_timer(game_id: int, chat_id: int):
             pass
         await db.update_game_status(game_id, "ended", "ended")
         active_games.pop(game_id, None)
+        game_timers.pop(game_id, None)
         return
 
     await start_game(game_id, chat_id)
@@ -487,6 +523,56 @@ async def end_game(game_id: int, chat_id: int, winner: str, bot=None):
     await db.close()
 
 
+@router.message(Command("wait"))
+async def cmd_extend_lobby_timer(message: Message):
+    """
+    /wait — kutish vaqtini 30 soniyaga uzaytiradi.
+    Faqat lobby bosqichida, agar yetarli o'yinchi bo'lmasa va
+    uzaytirish hali ishlatilmagan bo'lsa ishlaydi.
+    """
+    chat = message.chat
+    if chat.type == "private":
+        await message.answer("❌ Bu buyruq faqat guruhda ishlaydi.")
+        return
+
+    # O'yinni chat bo'yicha qidiramiz
+    game_id = None
+    game = None
+    for gid, g in list(active_games.items()):
+        if g.get("chat_id") == chat.id and g["phase"] == "lobby":
+            game_id = gid
+            game = g
+            break
+
+    if not game:
+        await message.answer(GAME_NOT_FOUND)
+        return
+
+    # Agar yetarli o'yinchi bo'lsa, uzaytirish shart emas
+    if len(game["players"]) >= MIN_PLAYERS:
+        await message.answer("✅ O'yinni boshlash uchun yetarli o'yinchi bor!")
+        return
+
+    # Agar allaqachon uzaytirilgan bo'lsa, qayta uzaytirilmaydi
+    if game.get("timer_extended"):
+        remaining = _get_remaining_time(game)
+        await message.answer(f"⏳ Tаймер allaqachon uzaytirilgan! Qolgan vaqt: {remaining} soniya.")
+        return
+
+    remaining = _get_remaining_time(game)
+    if remaining <= 0:
+        await message.answer("⏳ Kutish vaqti tugadi!")
+        return
+
+    # Таймерни 30 сонияга узайтирамиз
+    game["timer_end_time"] += 30
+    game["timer_extended"] = True
+
+    new_remaining = _get_remaining_time(game)
+
+    await message.answer(TIMER_EXTENDED.format(time=new_remaining))
+
+
 @router.callback_query(F.data.startswith("join_game:"))
 async def handle_join_game(callback: CallbackQuery):
     game_id = int(callback.data.split(":")[1])
@@ -520,6 +606,8 @@ async def handle_join_game(callback: CallbackQuery):
         f"• {pd['name']}" for pd in game["players"].values()
     ]
 
+    remaining = _get_remaining_time(game)
+
     try:
         await callback.message.edit_text(
             PLAYER_JOINED.format(
@@ -527,7 +615,7 @@ async def handle_join_game(callback: CallbackQuery):
                 count=len(game["players"]),
                 max=MAX_PLAYERS,
                 players="\n".join(player_names),
-                time=GAME_JOIN_TIME,
+                time=remaining,
             ),
             reply_markup=join_game_kb(game_id),
         )
