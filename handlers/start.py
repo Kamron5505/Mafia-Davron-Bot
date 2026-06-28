@@ -1,9 +1,11 @@
+import html
 from aiogram import Router, F
+from aiogram.enums import ParseMode
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command
 from database.db import Database
 from keyboards.main_menu import main_menu_kb, profile_roles_kb, back_kb
-from utils.messages import MAIN_MENU_TEXT, PROFILE_TEXT, ROLES_LIST_HEADER, ROLE_INFO, LANGUAGE_PROMPT, HELP_TEXT
+from utils.messages import MAIN_MENU_TEXT, PROFILE_TEXT, LANGUAGE_PROMPT, HELP_TEXT
 from roles.base_role import get_all_roles
 
 router = Router()
@@ -82,20 +84,20 @@ async def show_profile(message, user_id: int):
 @router.callback_query(F.data == "roles_list")
 async def show_roles_list(callback: CallbackQuery):
     all_roles = get_all_roles()
-    text = ROLES_LIST_HEADER
+    text = "🎭 <b>Barcha rollar:</b>\n\n"
     for role in all_roles:
-        text += ROLE_INFO.format(
+        text += "{emoji} <b>{title}</b> ({name})\n📖 {description}\n🏷 Tim: {team}\n\n".format(
             emoji=role.emoji,
-            title=role.title,
-            name=role.name,
-            description=role.description,
-            team=role.team_label(),
+            title=html.escape(role.title),
+            name=html.escape(role.name),
+            description=html.escape(role.description),
+            team=html.escape(role.team_label()),
         )
 
     if len(text) > 4000:
         text = text[:4000] + "\n\n...va boshqalar"
 
-    await callback.message.edit_text(text, reply_markup=back_kb())
+    await callback.message.edit_text(text, reply_markup=back_kb(), parse_mode=ParseMode.HTML)
     await callback.answer()
 
 
