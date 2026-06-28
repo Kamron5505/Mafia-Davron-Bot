@@ -90,7 +90,7 @@ async def main():
         broadcast.router,
     )
 
-    dp.startup.register(lambda: on_startup(bot))
+    dp.startup.register(on_startup)
 
     logger.info("Bot ishlayapti...")
     await dp.start_polling(bot)
