@@ -17,7 +17,7 @@ from aiogram.types import BotCommand, BotCommandScopeDefault
 from config import BOT_TOKEN
 import roles
 from database.db import Database
-from handlers import start, game, night, day, payment, broadcast
+from handlers import start, game, night, day, payment, broadcast, shop
 from handlers.admin import panel as admin_panel
 from handlers.admin import users as admin_users
 from handlers.admin import groups as admin_groups
@@ -45,6 +45,7 @@ async def set_bot_commands(bot: Bot):
         BotCommand(command="admin", description="Admin panel"),
         BotCommand(command="stats", description="O'yin statistikasi"),
         BotCommand(command="buy", description="Yulduzlar sotib olish"),
+        BotCommand(command="shop", description="⭐ Rol do'koni"),
     ]
     await bot.set_my_commands(commands, scope=BotCommandScopeDefault())
 
@@ -82,6 +83,7 @@ async def main():
         game.router,
         night.router,
         day.router,
+        shop.router,
         admin_panel.router,
         admin_users.router,
         admin_groups.router,

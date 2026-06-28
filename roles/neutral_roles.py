@@ -7,6 +7,7 @@ register_role(Role(
     team="neutral",
     description="Oshiqlar. Ikkalasi birga yutsa yoki yutqazsa.",
     passive=True,
+    stars_cost=200,
 ))
 
 register_role(Role(
@@ -17,6 +18,7 @@ register_role(Role(
     description="Manyak. Hammani yo'q qilib, yolg'iz yutsa.",
     night_action=True,
     action_type="kill",
+    stars_cost=500,
 ))
 
 register_role(Role(
@@ -26,6 +28,7 @@ register_role(Role(
     team="neutral",
     description="Joker. Ovoz berish orqali chiqarilib yutsa.",
     passive=True,
+    stars_cost=300,
 ))
 
 register_role(Role(
@@ -35,6 +38,7 @@ register_role(Role(
     team="neutral",
     description="Qasoskor. Uni o'ldirgan o'yinchi chiqarilsa yutsa.",
     passive=True,
+    stars_cost=250,
 ))
 
 register_role(Role(
@@ -44,6 +48,7 @@ register_role(Role(
     team="neutral",
     description="Telba. Tashriflarni tasodifiy boshqa joyga yo'naltiradi.",
     passive=True,
+    stars_cost=150,
 ))
 
 register_role(Role(
@@ -53,6 +58,7 @@ register_role(Role(
     team="neutral",
     description="Arvoh. O'lgandan keyin ham ovoz bera oladi.",
     passive=True,
+    stars_cost=300,
 ))
 
 register_role(Role(
@@ -62,6 +68,7 @@ register_role(Role(
     team="neutral",
     description="La'natlangan. Mafiya tomonidan o'ldirilsa, mafiyaga aylanadi.",
     passive=True,
+    stars_cost=200,
 ))
 
 register_role(Role(
@@ -71,6 +78,7 @@ register_role(Role(
     team="neutral",
     description="Jallod. Belgilangan nishonni chiqarib yutsa.",
     passive=True,
+    stars_cost=250,
 ))
 
 register_role(Role(
@@ -81,6 +89,7 @@ register_role(Role(
     description="Sektant. O'yinchilarni sektaga qo'shilishga targ'ib qiladi.",
     night_action=True,
     action_type="recruit",
+    stars_cost=350,
 ))
 
 register_role(Role(
@@ -91,6 +100,7 @@ register_role(Role(
     description="Piroman. O'yinchilarni yoqib, keyin hammasini birdaniga yondiradi.",
     night_action=True,
     action_type="douse",
+    stars_cost=400,
 ))
 
 register_role(Role(
@@ -101,6 +111,7 @@ register_role(Role(
     description="Vampir. Har kecha bir o'yinchini o'z tomoniga og'diradi.",
     night_action=True,
     action_type="convert",
+    stars_cost=400,
 ))
 
 register_role(Role(
@@ -111,16 +122,18 @@ register_role(Role(
     description="Infektsiya tashuvchi. 2 kechadan keyin o'ldiradigan infektsiya yuqtiradi.",
     night_action=True,
     action_type="infect",
+    stars_cost=350,
 ))
 
 register_role(Role(
     name="kraken",
     title="Kraken",
-    emoji="🐙",
+    emoji="👹",
     team="neutral",
-    description="Iblis. Kuchli yolg'iz o'ldiruvchi, maksus immunitetga ega.",
+    description="Iblis. Kuchli yolg'iz o'ldiruvchi, maxsus immunitetga ega.",
     night_action=True,
     action_type="kill",
+    stars_cost=600,
 ))
 
 register_role(Role(
@@ -130,6 +143,7 @@ register_role(Role(
     team="neutral",
     description="Qimorboz. Natijalarga garov tikadi va kuchaytirish oladi.",
     passive=True,
+    stars_cost=200,
 ))
 
 register_role(Role(
@@ -140,4 +154,5 @@ register_role(Role(
     description="Illyuziyachi. O'yinchilarni boshqa rol qilib ko'rsatadi.",
     night_action=True,
     action_type="illusion",
+    stars_cost=350,
 ))

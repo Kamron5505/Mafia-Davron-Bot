@@ -101,6 +101,7 @@ class Database:
             "stars_log": "id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, amount INTEGER NOT NULL, action_type TEXT NOT NULL, reason TEXT DEFAULT '', admin_id INTEGER DEFAULT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
             "payments": "id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, telegram_payment_id TEXT DEFAULT '', stars_amount INTEGER NOT NULL, price_amount INTEGER NOT NULL, currency TEXT DEFAULT 'XTR', status TEXT DEFAULT 'completed', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
             "settings": "key TEXT PRIMARY KEY, value TEXT NOT NULL",
+            "purchased_roles": "id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, role_name TEXT NOT NULL, used INTEGER DEFAULT 0, purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
         }
         for name, schema in new_tables.items():
             try:
@@ -497,3 +498,33 @@ class Database:
             (user_id,),
         )
         await self.conn.commit()
+
+    async def buy_role(self, user_id: int, role_name: str) -> bool:
+        cur = await self.conn.execute(
+            "SELECT id FROM purchased_roles WHERE user_id=? AND role_name=? AND used=0",
+            (user_id, role_name),
+        )
+        if await cur.fetchone():
+            return False
+        await self.conn.execute(
+            "INSERT INTO purchased_roles (user_id, role_name) VALUES (?, ?)",
+            (user_id, role_name),
+        )
+        await self.conn.commit()
+        return True
+
+    async def use_purchased_role(self, user_id: int, role_name: str) -> bool:
+        cur = await self.conn.execute(
+            "UPDATE purchased_roles SET used=1 WHERE user_id=? AND role_name=? AND used=0 LIMIT 1",
+            (user_id, role_name),
+        )
+        await self.conn.commit()
+        return cur.rowcount > 0
+
+    async def get_purchased_role_names(self, user_id: int) -> list:
+        cur = await self.conn.execute(
+            "SELECT role_name FROM purchased_roles WHERE user_id=? AND used=0",
+            (user_id,),
+        )
+        rows = await cur.fetchall()
+        return [row["role_name"] for row in rows]

@@ -175,3 +175,13 @@ GAME_STATS = (
 CONFIRM_LEAVE = "🚪 O'yindan chiqishni xoxlaysizmi?"
 
 LANGUAGE_PROMPT = "🌐 *Til tanlash:*\nHozircha faqat O'zbek tili mavjud."
+
+SHOP_TEXT = (
+    "⭐ <b>Rol Do'koni</b> ⭐\n"
+    "———————————————\n"
+    "O'zingizga yoqqan rolni Stars (⭐) ga sotib oling!\n"
+    "Sotib olingan rol keyingi o'yinlarda sizga beriladi.\n\n"
+    "💰 <b>Sizda:</b> {balance}⭐\n"
+    "———————————————\n"
+    "<i>Rol tanlang:</i>"
+)

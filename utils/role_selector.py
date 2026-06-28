@@ -1,6 +1,7 @@
 import random
-from typing import List
-from roles.base_role import ROLES, get_roles_by_team
+from typing import List, Dict
+from roles.base_role import ROLES, get_roles_by_team, get_role
+from database.db import Database
 
 
 def select_roles(count: int = 6) -> list:
@@ -45,7 +46,10 @@ def select_roles(count: int = 6) -> list:
     return selected
 
 
-def assign_roles(players: list, selected_roles: list) -> dict:
+def assign_roles(players: list, selected_roles: list, purchased_roles: Dict[int, str] = None) -> dict:
+    if purchased_roles is None:
+        purchased_roles = {}
+
     if len(players) < len(selected_roles):
         diff = len(players) - len(selected_roles)
         townsfolk_roles = [r for r in selected_roles if r.name == "townsfolk"]
@@ -58,7 +62,27 @@ def assign_roles(players: list, selected_roles: list) -> dict:
 
     random.shuffle(players)
     assignments = {}
+    assigned_roles = list(selected_roles)
+
+    # First, assign purchased roles to their buyers
+    for player in list(players):
+        if player in purchased_roles:
+            role_name = purchased_roles[player]
+            role = get_role(role_name)
+            if role and role in assigned_roles:
+                assignments[player] = role
+                assigned_roles.remove(role)
+                players.remove(player)
+            elif role:
+                # Role not in selected list, add it and remove another
+                assignments[player] = role
+                players.remove(player)
+                if assigned_roles:
+                    assigned_roles.pop()
+
+    # Then assign remaining roles to remaining players
     for i, player in enumerate(players):
-        role = selected_roles[i % len(selected_roles)]
+        role = assigned_roles[i % len(assigned_roles)]
         assignments[player] = role
+
     return assignments

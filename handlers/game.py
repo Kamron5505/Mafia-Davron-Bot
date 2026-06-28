@@ -91,7 +91,15 @@ async def start_game(game_id: int, chat_id: int):
 
     player_ids = list(game["players"].keys())
     selected_roles = select_roles(ROLES_PER_GAME)
-    assignments = assign_roles(player_ids, selected_roles)
+
+    # Fetch purchased roles for all players
+    purchased_roles = {}
+    for pid in player_ids:
+        pr = await db.get_purchased_role_names(pid)
+        if pr:
+            purchased_roles[pid] = pr[0]
+
+    assignments = assign_roles(player_ids, selected_roles, purchased_roles)
 
     await bot.send_message(chat_id, GAME_STARTING)
 
@@ -114,6 +122,10 @@ async def start_game(game_id: int, chat_id: int):
             await bot.send_message(user_id, role_text)
         except Exception:
             pass
+
+    # Mark purchased roles as used after successful assignment
+    for pid, role_name in purchased_roles.items():
+        await db.use_purchased_role(pid, role_name)
 
     await db.update_game_status(game_id, "night", "night")
     game["phase"] = "night"

@@ -11,10 +11,11 @@ def main_menu_kb() -> InlineKeyboardMarkup:
         InlineKeyboardButton(text="🎲 Chatga kirish", callback_data="join_chat"),
     )
     builder.row(
-        InlineKeyboardButton(text="🌐 Til / Language", callback_data="language"),
+        InlineKeyboardButton(text="⭐ Rol Do'koni", callback_data="shop_menu"),
+        InlineKeyboardButton(text="👤 Profil | 🎭 Rollar", callback_data="profile_roles"),
     )
     builder.row(
-        InlineKeyboardButton(text="👤 Profil | 🎭 Rollar", callback_data="profile_roles"),
+        InlineKeyboardButton(text="🌐 Til / Language", callback_data="language"),
     )
     return builder.as_markup()
 

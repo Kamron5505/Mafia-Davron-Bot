@@ -8,6 +8,7 @@ register_role(Role(
     description="Komissar. Har kecha bir o'yinchining rolini tekshiradi.",
     night_action=True,
     action_type="investigate",
+    stars_cost=250,
 ))
 
 register_role(Role(
@@ -18,6 +19,7 @@ register_role(Role(
     description="Doktor. Har kecha bir o'yinchini davolaydi (o'limdan saqlaydi).",
     night_action=True,
     action_type="heal",
+    stars_cost=200,
 ))
 
 register_role(Role(
@@ -25,8 +27,9 @@ register_role(Role(
     title="Dengizchi",
     emoji="⚓️",
     team="town",
-    description="Oddiy fuqaro. Maksus qobiliyati yo'q, faqat ovoz beradi.",
+    description="Oddiy fuqaro. Maxsus qobiliyati yo'q, faqat ovoz beradi.",
     passive=True,
+    stars_cost=0,
 ))
 
 register_role(Role(
@@ -37,6 +40,7 @@ register_role(Role(
     description="Serjant. Himoya qilgan o'yinchi o'rniga o'zi o'ladi.",
     night_action=True,
     action_type="guard",
+    stars_cost=250,
 ))
 
 register_role(Role(
@@ -46,6 +50,7 @@ register_role(Role(
     team="town",
     description="Mer. Ovozi ikki hisoblanadi.",
     passive=True,
+    stars_cost=300,
 ))
 
 register_role(Role(
@@ -57,6 +62,7 @@ register_role(Role(
     night_action=True,
     action_type="reveal",
     max_uses=1,
+    stars_cost=250,
 ))
 
 register_role(Role(
@@ -67,6 +73,7 @@ register_role(Role(
     description="Fohisha. Kechagi harakatni bloklaydi.",
     night_action=True,
     action_type="block",
+    stars_cost=200,
 ))
 
 register_role(Role(
@@ -78,6 +85,7 @@ register_role(Role(
     night_action=True,
     action_type="publish",
     max_uses=1,
+    stars_cost=250,
 ))
 
 register_role(Role(
@@ -88,6 +96,7 @@ register_role(Role(
     description="Kuzatuvchi. Kim kimga tashrif buyurganini ko'radi.",
     night_action=True,
     action_type="watch",
+    stars_cost=250,
 ))
 
 register_role(Role(
@@ -98,6 +107,7 @@ register_role(Role(
     description="Qorovul. Bir o'yinchini qamab qo'yadi va himoyalaydi.",
     night_action=True,
     action_type="jail",
+    stars_cost=300,
 ))
 
 register_role(Role(
@@ -107,6 +117,7 @@ register_role(Role(
     team="town",
     description="Ovchi. O'lganda bir o'yinchini otib o'ldiradi.",
     passive=True,
+    stars_cost=200,
 ))
 
 register_role(Role(
@@ -116,6 +127,7 @@ register_role(Role(
     team="town",
     description="Gvardiyachi. Birinchi mafiya hujumiga chidamli.",
     passive=True,
+    stars_cost=150,
 ))
 
 register_role(Role(
@@ -127,6 +139,7 @@ register_role(Role(
     night_action=False,
     action_type="cancel_vote",
     max_uses=1,
+    stars_cost=350,
 ))
 
 register_role(Role(
@@ -138,6 +151,7 @@ register_role(Role(
     night_action=False,
     action_type="force_nominate",
     max_uses=1,
+    stars_cost=350,
 ))
 
 register_role(Role(
@@ -148,6 +162,7 @@ register_role(Role(
     description="Tekshiruvchi. Rol kategoriyasini aniqlaydi.",
     night_action=True,
     action_type="investigate_category",
+    stars_cost=200,
 ))
 
 register_role(Role(
@@ -159,6 +174,7 @@ register_role(Role(
     night_action=True,
     action_type="grant_immunity",
     max_uses=1,
+    stars_cost=300,
 ))
 
 register_role(Role(
@@ -170,6 +186,7 @@ register_role(Role(
     night_action=True,
     action_type="alert",
     max_uses=3,
+    stars_cost=350,
 ))
 
 register_role(Role(
@@ -180,6 +197,7 @@ register_role(Role(
     description="Izolyatorchi. Bir o'yinchiga barcha tashriflarni bloklaydi.",
     night_action=True,
     action_type="trap",
+    stars_cost=250,
 ))
 
 register_role(Role(
@@ -191,6 +209,7 @@ register_role(Role(
     night_action=False,
     action_type="save",
     max_uses=1,
+    stars_cost=350,
 ))
 
 register_role(Role(
@@ -200,6 +219,7 @@ register_role(Role(
     team="town",
     description="Kuchli fuqaro. Rol bloklashga immunitetli.",
     passive=True,
+    stars_cost=150,
 ))
 
 register_role(Role(
@@ -207,8 +227,9 @@ register_role(Role(
     title="Egizak Baliqlar",
     emoji="🐟🐟",
     team="town",
-    description="Egizaklar. Birga yutqazishadi/yutыshadi, bir-birini taniydi.",
+    description="Egizaklar. Birga yutadi yoki yutqazadi, bir-birini taniydi.",
     passive=True,
+    stars_cost=400,
 ))
 
 register_role(Role(
@@ -220,6 +241,7 @@ register_role(Role(
     night_action=True,
     action_type="armor",
     max_uses=1,
+    stars_cost=200,
 ))
 
 register_role(Role(
@@ -230,6 +252,7 @@ register_role(Role(
     description="Sayyoh. O'yinchini kuzatib, uning nishonini ko'radi.",
     night_action=True,
     action_type="track",
+    stars_cost=200,
 ))
 
 register_role(Role(
@@ -240,6 +263,7 @@ register_role(Role(
     description="Savdogar. Ikki o'yinchining qobiliyatini almashtiradi.",
     night_action=True,
     action_type="trade",
+    stars_cost=300,
 ))
 
 register_role(Role(
@@ -250,4 +274,5 @@ register_role(Role(
     description="Alkimyogar. Har kecha ikkisidan bir ikkirni yaratadi.",
     night_action=True,
     action_type="create_potion",
+    stars_cost=250,
 ))

@@ -13,6 +13,7 @@ class Role:
     action_type: str = ""
     max_uses: int = -1
     passive: bool = False
+    stars_cost: int = 0
 
     def full_name(self) -> str:
         return f"{self.emoji} {self.title} ({self.name})"
